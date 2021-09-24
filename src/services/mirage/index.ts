@@ -1,5 +1,5 @@
-import { createServer, Factory, Model } from 'miragejs';
 import faker from 'faker';
+import { createServer, Factory, Model } from 'miragejs';
 
 type User = {
   name: string;
@@ -16,21 +16,21 @@ export function makeServer() {
     // gerar dados em massa
     factories: {
       user: Factory.extend({
-        name(i: number) {
-          return `User ${i + 1}`;
+        name() {
+          return faker.name.findName();
         },
         email() {
-          return 'emailteste@gmail.com';
+          return faker.internet.email().toLowerCase();
         },
         createdAt() {
-          return '10/02/2021';
+          return faker.date.recent(10);
         },
       }),
     },
 
     // criação de users fake
     seeds(server) {
-      server.createList('user', 200);
+      server.createList('user', 20);
     },
 
     routes() {
