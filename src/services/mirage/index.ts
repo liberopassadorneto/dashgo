@@ -1,5 +1,11 @@
 import faker from 'faker';
-import { createServer, Factory, Model, Response } from 'miragejs';
+import {
+  ActiveModelSerializer,
+  createServer,
+  Factory,
+  Model,
+  Response,
+} from 'miragejs';
 
 type User = {
   name: string;
@@ -7,8 +13,18 @@ type User = {
   created_at: string;
 };
 
+// User
+// Address
+
+// Active Model
+// { name: "Diego", email:"email@teste.com", address: {"..."} }
+
 export function makeServer() {
   const server = createServer({
+    serializers: {
+      application: ActiveModelSerializer,
+    },
+
     models: {
       user: Model.extend<Partial<User>>({}),
     },
@@ -64,6 +80,8 @@ export function makeServer() {
         // 200 -> código HTTP: OK
         return new Response(200, { 'x-total-count': String(total) }, { users });
       });
+
+      this.get('/users/:id');
       this.post('/users');
 
       // resetar as rotas para default
